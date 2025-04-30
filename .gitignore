@@ -1,6 +1,7 @@
 # Virtual environment directories
 .env/
 venv/
-
+__pycache__/
+*.csv
 #Sample participant data
 fitbit_pipeline/participants.json/
