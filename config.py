@@ -1,0 +1,9 @@
+REDIRECT_URI = "https://localhost:105/hello/"
+FITBIT_API_BASE_URL = 'https://api.fitbit.com'
+FITBIT_SLEEP_ENDPOINT_RANGE = '/1.2/user/{fitbit_device_id}/sleep/date/{start_date}/{end_date}.json'
+FITBIT_SLEEP_ENDPOINT_EACH = '/1.2/user/{fitbit_device_id}/sleep/date/{sleep_date}.json'
+FITBIT_STEPS_ENDPOINT_EACH = '/1.2/user/{fitbit_device_id}/activities/steps/date/{sleep_date}/1d/1min.json'
+FITBIT_HR_ENDPOINT_EACH = '/1.2/user/{fitbit_device_id}/activities/heart/date/{sleep_date}/1d/1min.json'
+FITBIT_TOKEN_URL = 'https://api.fitbit.com/oauth2/token'
+FITBIT_AUTH_URL = "https://www.fitbit.com/oauth2/authorize"
+SCOPES = ['activity', 'sleep', 'heartrate', 'profile']

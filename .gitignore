@@ -1,0 +1,6 @@
+# Virtual environment directories
+.env/
+venv/
+
+#Sample participant data
+fitbit_pipeline/participants.json/
