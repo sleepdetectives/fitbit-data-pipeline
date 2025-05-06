@@ -1,0 +1,9 @@
+message: "If you use this pipeline, please cite it as below:"
+title: "An Open Pipeline for Longitudinal Sleep and Activity Extraction form Fitbit Devices"
+authors:
+    family-names: Saka
+    given-names: Abiola
+    affiliation: "University of Bristol"
+date-released: 2025-04-29
+version: 1.0.0
+doi: 10.5281/zenodo.123456

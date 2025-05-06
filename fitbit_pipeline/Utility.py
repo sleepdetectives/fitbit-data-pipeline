@@ -1,7 +1,13 @@
+import logging
 import os
 import json
+import platform
+import subprocess
+
 import pandas as pd
 from datetime import datetime, timedelta
+
+root_folder = os.path.abspath(os.path.join(os.path.dirname(__file__), '../'))
 
 
 def get_time(date_time_str):
@@ -11,7 +17,7 @@ def get_time(date_time_str):
 
 def dump_data(uid, start_date, end_date, sleep_data):
     """Save sleep data as a JSON file."""
-    folder_path = "./sleep_data"
+    folder_path = "./raw_sleep_data"
     os.makedirs(folder_path, exist_ok=True)
 
     file_path = os.path.join(folder_path, f"{uid}_{start_date}_to_{end_date}.json")
@@ -19,6 +25,8 @@ def dump_data(uid, start_date, end_date, sleep_data):
     with open(file_path, "w") as json_file:
         json.dump(sleep_data, json_file, indent=4)
 
+    log = get_logger()
+    log.info(f"Sleep data saved to {file_path}")
     print(f"Sleep data saved to {file_path}")
 
 
@@ -46,22 +54,23 @@ def process_sleep_response(pid, sleep_data):
     for night in sleep_data:
         levels_data = night['levels']['data']
 
-        sleep_start, wake_start = get_time(levels_data[0]['dateTime']), get_time(night['endTime']) if (levels_data[-1]['level'] != 'wake') else get_time(levels_data[-1]['dateTime'])
+
         bed_time, out_of_bed_time = get_time(night['startTime']), get_time(night['endTime'])
-
-        # SOL Calculation (Sleep Onset Latency)
-        SOL = 0 if levels_data[0]['level'] != 'wake' else levels_data[0]['seconds'] / 60
-
-        # WASO Calculation (Wake After Sleep Onset)
+        minutesAwake = night['minutesAwake']
+        minutesAsleep = night['minutesAsleep']
+        timeInBed = night['timeInBed']
+        efficiency = night['efficiency']
+        type = night['type']
         short_data = night['levels'].get('shortData', [])
-        real_waso_count = len(short_data)
+
+        ############## This block contained derived values ########################################
+        sleep_start = get_time(levels_data[0]['dateTime']) if(levels_data[0]['level'] != "wake") else get_time(levels_data[1]['dateTime'])
+        wake_start = get_time(night['endTime']) if (levels_data[-1]['level'] != 'wake') else get_time(levels_data[-1]['dateTime'])
+        SOL = 0 if levels_data[0]['level'] != 'wake' else levels_data[0]['seconds'] / 60
         WASO = night['minutesAwake'] - SOL
-
-        # Total Sleep Time (TST) & Sleep Efficiency (SE)
-        TIB = time_diff(bed_time, out_of_bed_time)
         TST = time_diff(sleep_start, wake_start) - WASO
-        SE = (TST / TIB) * 100 if TIB else 0
-
+        SE = round((TST / timeInBed),2) * 100 if minutesAsleep else 0
+        ############## This block contained derived values ########################################
         # Extract sleep stage summary data
         summary = night['levels'].get('summary', {})
         stage_counts = {stage: summary.get(stage, {}).get('count', 0) for stage in ['wake', 'rem', 'light', 'deep']}
@@ -71,22 +80,22 @@ def process_sleep_response(pid, sleep_data):
         sleep_df = pd.DataFrame([{
             'pid': pid,
             'date': night['dateOfSleep'],
-            'bedTime': bed_time,
-            'sleepTime': sleep_start,
-            'wakeTime': wake_start,
-            'outOfBedTime': out_of_bed_time,
+            'StartTime': bed_time,
+            'EndTime': out_of_bed_time,
+            'TimeInBed': timeInBed,
+            'MinutesAwake': minutesAwake,
+            'TotalSleepTime': minutesAsleep,
+            **stage_counts,
+            **stage_minutes,
+            'SleepEfficiency': efficiency,
+            'sleep_time': sleep_start,
+            'wake_time': wake_start,
             'SOL': SOL,
-            'TIB': TIB,
             'WASO': WASO,
             'TST': TST,
             'SE': SE,
-            'rem_sleep': stage_minutes['rem'],
-            'light_sleep': stage_minutes['light'],
-            'deep_sleep': stage_minutes['deep'],
-            'wake_count': real_waso_count,
+            'LogType': type,
             'isMainSleep': night['isMainSleep'],
-            **stage_counts,  # Unpacks wake_count, rem_count, light_count, deep_count
-            **stage_minutes  # Unpacks raw_wake_period, rem_min, light_min, deep_min
         }])
 
         all_sleep.append(sleep_df)
@@ -122,31 +131,21 @@ def get_fitbit_epoch(pid, data, short_data):
     return pd.DataFrame(epochs)
 
 
-participant_schema = {
-    "type": "object",
-    "properties": {
-        "participants": {
-            "type": "array",
-            "items": {
-                "type": "object",
-                "properties": {
-                    "id": {"type": "string"},
-                    "age": {"type": "integer"},
-                    "study_period": {"type": "array", "items": {"type": "string"}, "minItems": 2, "maxItems": 2},
-                    "valid_dates": {"type": "array", "items": {"type": "string"}},
-                    "device": {
-                        "type": "object",
-                        "properties": {
-                            "device_id": {"type": "string"},
-                            "model": {"type": "string"},
-                        },
-                        "required": ["device_id", "model"],
-                    },
-                },
-                "required": ["id", "age", "study_period", "valid_dates", "device"],
-            },
-        }
-    },
-    "required": ["participants"],
-}
+def browser_incognito(url):
+    if platform.system() == "Windows":
+        subprocess.Popen(f'start chrome --new-window --incognito "{url}"', shell=True)
 
+
+def get_logger(log_file= 'app.log'):
+    logger = logging.getLogger(log_file)
+
+    if not logger.handlers:
+        logger.setLevel(logging.DEBUG)
+        formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+        log_path = os.path.join(root_folder, 'logs')
+        file_path = os.path.join(log_path, log_file)
+        file_handler = logging.FileHandler(file_path)
+        file_handler.setFormatter(formatter)
+        logger.addHandler(file_handler)
+
+    return logger
