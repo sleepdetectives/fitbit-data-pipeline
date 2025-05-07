@@ -1,12 +1,12 @@
 import csv
 import time
 
-from fitbit_pipeline.Classes.DataCollector import DataCollector
-from fitbit_pipeline.Classes.Init import Participant, Device
-from fitbit_pipeline.Classes.PManager import ParticipantManager
+from fitbit_data_pipeline.Classes.DataCollector import DataCollector
+from fitbit_data_pipeline.Classes.Participant import Participant, Device
+from fitbit_data_pipeline.Classes.PManager import ParticipantManager
 import config as cfg
 import os
-import fitbit_pipeline.Utility as util
+import fitbit_data_pipeline.Utility as util
 
 client_id = os.getenv("client_id")
 client_secret = os.getenv("client_secret")
@@ -60,5 +60,5 @@ def execute():
                 if session:
                     participant_manager.end_session(session, participant.study_period[1])
     except FileNotFoundError:
-        print("Opps! No participant file found. Are you sure you have participants.csv in fitbit_pipeline directory?.")
+        print("Opps! No participant file found. Are you sure you have participants.csv in fitbit_data_pipeline directory?.")
 

@@ -1,0 +1,32 @@
+[tool.poetry]
+name = "fitbit-data-pipeline"
+version = "1.0.1"
+description = "Fitbit Data Collection Pipeline"
+authors = ["Abiola Saka <abiola.saka@bristol.ac.uk>"]
+license = "MIT"
+homepage = "https://github.com/sleepdetectives/fitbit-data-collector"
+repository = "https://github.com/sleepdetectives/fitbit-data-collector"
+documentation = "https://zenodo.org/records/15351924"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = ">=3.10,<3.13"
+Flask = ">=3.1,<4.0"
+requests = ">=2.32,<3.0"
+requests-oauthlib = ">=2.0,<3.0"
+pandas = ">=2.2,<3.0"
+numpy = ">=2.2,<3.0"
+python-dateutil = ">=2.8"
+python-dotenv = ">=1.0"
+cryptography = ">=44.0,<45.0"
+cffi = ">=1.17,<2.0"
+
+[tool.poetry.scripts]
+fitbit-pipeline = "fitbit_data_pipeline.runner:execute"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^7.0"  # Optional: Add testing dependencies here
+
+[build-system]
+requires = ["poetry>=1.0"]
+build-backend = "poetry.masonry.api"

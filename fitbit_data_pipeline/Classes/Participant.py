@@ -1,7 +1,7 @@
 from datetime import datetime
 import pandas as pd
 from pandas import to_datetime
-import fitbit_pipeline.Utility as util
+import fitbit_data_pipeline.Utility as util
 
 log = util.get_logger()
 

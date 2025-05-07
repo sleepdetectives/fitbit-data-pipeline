@@ -2,12 +2,12 @@ import json
 from datetime import datetime
 from pathlib import Path
 
-from fitbit_pipeline.Classes.Init import Device
-from fitbit_pipeline.Classes.Init import Participant
-from fitbit_pipeline.Classes.Init import Session
+from fitbit_data_pipeline.Classes.Participant import Device
+from fitbit_data_pipeline.Classes.Participant import Participant
+from fitbit_data_pipeline.Classes.Participant import Session
 from dotenv import set_key
 import os
-import fitbit_pipeline.Utility as util
+import fitbit_data_pipeline.Utility as util
 
 
 env_file = ('');os.path.join(os.path.dirname(os.path.dirname(__file__)), '.')

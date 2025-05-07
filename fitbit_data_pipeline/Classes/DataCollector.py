@@ -5,11 +5,11 @@ from datetime import datetime
 import pandas as pd
 from requests_oauthlib import OAuth2Session
 from config import FITBIT_AUTH_URL
-from .Init import Participant
-from .Init import Session
-from fitbit_pipeline.Classes.PManager import ParticipantManager
+from .Participant import Participant
+from .Participant import Session
+from fitbit_data_pipeline.Classes.PManager import ParticipantManager
 import config as cfg
-import fitbit_pipeline.Utility as util
+import fitbit_data_pipeline.Utility as util
 
 log = util.get_logger()
 
@@ -85,13 +85,13 @@ class DataCollector:
                     if "code=" in response and "state=" in response:
                         redirect_response = response
                         #print("redirect URL now written!")
-                        #print(f"redirect URL {redirect_response}")
+                        print(f"redirect URL {redirect_response}")
                         # Fetch token and store it in the participant object
                         token = fitbit.fetch_token(self.TOKEN_URL, authorization_response=redirect_response,
                                                    client_secret=self.client_secret)
                         participant.token = token
-                        #print(f"Assigned fitbit id: {participant.assigned_fitbit}")
-                        #print(f"Returned token user id: {token['user_id']}")
+                        print(f"Assigned fitbit id: {participant.assigned_fitbit}")
+                        print(f"Returned token user id: {token['user_id']}")
                         if participant.assigned_fitbit == token['user_id']:
                             participant.is_authorized = True
                             participant_manager.save_token(participant)

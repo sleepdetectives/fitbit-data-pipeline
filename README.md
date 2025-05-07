@@ -20,7 +20,7 @@ FitbitDataPipeline
 - raw_sleep_data : raw sleep json file from Fitbit Web API 
 - tokens : Locally managed Fitbit user tokens
 - app_server - Flask app for the Fitbit OAuth2
-- auth_code - Application generated for the exchange of the redirect url after athentication
+- auth_code - Application generated for the exchange of the redirect url after authentication
 - config - contain some user configurations and fitbit WebAPI endpoint URLs
 - License 
 - participants.csv 

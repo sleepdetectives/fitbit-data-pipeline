@@ -1,6 +1,6 @@
 import os
 from dotenv import load_dotenv
-import fitbit_pipeline.Utility as util
+import fitbit_data_pipeline.Utility as util
 
 log = util.get_logger()
 load_dotenv('.env')

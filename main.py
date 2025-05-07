@@ -1,4 +1,4 @@
-import fitbit_pipeline.runner as pipeline_runner
+import fitbit_data_pipeline.runner as pipeline_runner
 
 if __name__ == '__main__':
     try:
