@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "fitbit-data-pipeline"
-version = "1.0.1"
+version = "1.0.2"
 description = "Fitbit Data Collection Pipeline"
 authors = ["Abiola Saka <abiola.saka@bristol.ac.uk>"]
 license = "MIT"
