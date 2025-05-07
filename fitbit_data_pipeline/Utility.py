@@ -3,13 +3,14 @@ import os
 import json
 import platform
 import subprocess
+from pathlib import Path
 
 import pandas as pd
 from datetime import datetime, timedelta
 
-root_folder = os.path.abspath(os.path.join(os.path.dirname(__file__), '../'))
-
-
+#root_folder = os.path.abspath(os.path.join(os.path.dirname(__file__), '../'))
+root_folder = os.getcwd()
+print("The current working directory:",root_folder)
 def get_time(date_time_str):
     """Convert a timestamp string to a time object."""
     return datetime.strptime(date_time_str, '%Y-%m-%dT%H:%M:%S.%f').time()
@@ -17,10 +18,11 @@ def get_time(date_time_str):
 
 def dump_data(uid, start_date, end_date, sleep_data):
     """Save sleep data as a JSON file."""
-    folder_path = "./raw_sleep_data"
-    os.makedirs(folder_path, exist_ok=True)
+    #folder_path = "./raw_sleep_data"
+    dump_path = os.path.join(root_folder, 'raw_sleep_data')
+    os.makedirs(dump_path, exist_ok=True)
 
-    file_path = os.path.join(folder_path, f"{uid}_{start_date}_to_{end_date}.json")
+    file_path = os.path.join(dump_path, f"{uid}_{start_date}_to_{end_date}.json")
 
     with open(file_path, "w") as json_file:
         json.dump(sleep_data, json_file, indent=4)
@@ -142,8 +144,10 @@ def get_logger(log_file= 'app.log'):
     if not logger.handlers:
         logger.setLevel(logging.DEBUG)
         formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-        log_path = os.path.join(root_folder, 'logs')
-        file_path = os.path.join(log_path, log_file)
+        log_path = Path.cwd() / 'logs'
+        log_path.mkdir(parents=True, exist_ok=True)
+
+        file_path = log_path / log_file
         file_handler = logging.FileHandler(file_path)
         file_handler.setFormatter(formatter)
         logger.addHandler(file_handler)

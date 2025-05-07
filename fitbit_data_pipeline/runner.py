@@ -14,7 +14,7 @@ redirect_uri = cfg.REDIRECT_URI
 
 
 def execute():
-    root_folder = os.path.abspath(os.path.join(os.path.dirname(__file__), '../'))
+    root_folder = os.getcwd()
     print(f"Root folder: {root_folder}")
     output_path = os.path.join(root_folder, "logs")
     os.makedirs(output_path, exist_ok=True)
@@ -26,7 +26,7 @@ def execute():
         with open(root_folder+'/participants.csv', "r") as file:
             p_data = csv.DictReader(file)
             ##print("I got here")
-            log.info("Welcome Here!")
+            #log.info("Welcome Here!")
             participants = []
             devices = []
             for p in p_data:

@@ -19,4 +19,5 @@ FITBIT_STEPS_ENDPOINT_EACH = '/1.2/user/{fitbit_device_id}/activities/steps/date
 FITBIT_HR_ENDPOINT_EACH = '/1.2/user/{fitbit_device_id}/activities/heart/date/{sleep_date}/1d/1min.json'
 FITBIT_TOKEN_URL = 'https://api.fitbit.com/oauth2/token'
 FITBIT_AUTH_URL = "https://www.fitbit.com/oauth2/authorize"
+FITBIT_LOGOUT_URL = "https://www.fitbit.com/logout"
 SCOPES = ['activity', 'sleep', 'heartrate', 'profile']

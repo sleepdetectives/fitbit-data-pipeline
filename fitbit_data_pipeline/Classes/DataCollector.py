@@ -4,7 +4,6 @@ import webbrowser
 from datetime import datetime
 import pandas as pd
 from requests_oauthlib import OAuth2Session
-from config import FITBIT_AUTH_URL
 from .Participant import Participant
 from .Participant import Session
 from fitbit_data_pipeline.Classes.PManager import ParticipantManager
@@ -63,11 +62,11 @@ class DataCollector:
             return  # No need to re-authorize
 
         fitbit = OAuth2Session(self.client_id, redirect_uri=self.redirect_uri, scope=self.SCOPES)
-        authorization_url, state = fitbit.authorization_url(FITBIT_AUTH_URL)
+        authorization_url, state = fitbit.authorization_url(self.FITBIT_AUTH_URL)
         #print(f"Please go here and authorize participant {participant.participant_id}: {authorization_url}")
         print(f"Launching the browser to authorise user {participant.participant_id}")
 
-        webbrowser.open("https://www.fitbit.com/logout")
+        webbrowser.open(cfg.FITBIT_LOGOUT_URL)
         time.sleep(5)
         print(f"Press log into the fitbit account for user {participant.participant_id}. Then press the enter key")
         input()
@@ -75,7 +74,7 @@ class DataCollector:
         timeout = 30
         start_time = time.time()
         redirect_response = None
-        auth_path = os.path.abspath("auth_code.txt")
+        auth_path = os.path.join(os.getcwd(), "auth_code.txt")
         print("Waiting for the redirect URL file to be written")
         while time.time() - start_time < timeout:
             if os.path.exists(auth_path):
