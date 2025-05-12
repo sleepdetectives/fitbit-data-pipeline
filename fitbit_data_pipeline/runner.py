@@ -23,7 +23,7 @@ def execute():
     log = util.get_logger()
 
     try:
-        with open(root_folder+'/participants.csv', "r") as file:
+        with open(root_folder+'/participants_.csv', "r") as file:
             p_data = csv.DictReader(file)
             ##print("I got here")
             #log.info("Welcome Here!")
@@ -60,5 +60,5 @@ def execute():
                 if session:
                     participant_manager.end_session(session, participant.study_period[1])
     except FileNotFoundError:
-        print("Opps! No participant file found. Are you sure you have participants.csv in fitbit_data_pipeline directory?.")
+        print("Opps! No participant file found. Are you sure you have participants_.csv in fitbit_data_pipeline directory?.")
 

@@ -22,7 +22,8 @@ cryptography = ">=44.0,<45.0"
 cffi = ">=1.17,<2.0"
 
 [tool.poetry.scripts]
-fitbit-pipeline = "fitbit_data_pipeline.runner:execute"
+fitbit-auth = "fitbit_data_pipeline.cli:start_server"
+fitbit-app = "fitbit_data_pipeline.cli:run_pipeline"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^7.0"  # Optional: Add testing dependencies here

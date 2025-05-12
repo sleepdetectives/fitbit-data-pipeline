@@ -26,7 +26,7 @@ FitbitDataPipeline
 - participants.csv 
 - readme - This file
 - requirements : Required packages to successfully run the application
-- 
+
 # Requirement
 Aside the packages required as specified in the requirements file. The following are also needed to run this pipeline
 - Core - Python 3.8+
@@ -35,21 +35,68 @@ Aside the packages required as specified in the requirements file. The following
 (ensure intraday data access is enabled using require a separate application)
 
 # Getting Started
-The application is into two parts: Flask application for Fitbit Authentication and the main pipeline 
+## Running from the Source (GitHub)
+1. Clone the repository
+```
+git clone https://github.com/sleepdetectives/fitbit-data-pipeline.git
+cd FitbitDataPipeline
+```
+2. Set up a virtual environment (Optional)
+```
+python -m venv venv
+source venv/bin/activate
+```
+3. Install Dependencies
+```
+pip install -r requirements.txt
+```
+## **Running as a Python Package**
+1. Create a new project or use an existing one
+2. Head on to your terminal to install the package
+ ```
+pip install fitbit-data-pipeline
+```
+3. Install poetry package based on your platform(OS)
+4. After performing the preparing environment and configuration steps (See below):
+5.  Start the app_server using
+```
+poetry run fitbit-auth
+```
+6. Start the main data collection process
+```
+poetry run fitbit-app
+```
+
+## **Preparing Environment and Configurations**
 1. Add the participant file (participants.csv) to the project root folder with the following structure:
 
 ############# participants file ##################################
+
+
 pid,age,fitbit_id,device_model,study_period,collection_dates
+
+
 ABC02,10,Z4XX11,Inspire 3,"2024-11-05,2024-11-13",2024-11-05;2024-11-06;2024-11-07;2024-11-08;2024-11-09;2024-11-10;2024-11-11;2024-11-12;2024-11-13
+
+
 ###################################################################
 
-2. create .env file and populate it with your fitbit developer account client id and secret
+2. create .env file in the project root and populate it with your fitbit developer account client id and secret
+
 ############### .env file ###################################
+
+
+
 client_id = "XXXXX"
 client_secret = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+
+
 ##############################################################
 
-3.  Start the app_server using python app.py
+3. Create a copy of sample_files\config.py file and place in the project root folder 
+
+Note: sample files needed for the above are included in the "sample_files" directory
+
 # Output Files
 - all_sleep_data :
 ![img_1.png](images/sleep_summary_sample.png)....fig 1

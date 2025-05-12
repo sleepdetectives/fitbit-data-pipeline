@@ -3,7 +3,7 @@ from dotenv import load_dotenv
 import fitbit_data_pipeline.Utility as util
 
 log = util.get_logger()
-load_dotenv('.env')
+load_dotenv('.env_')
 client_id = os.getenv("client_id")
 client_secret = os.getenv("client_secret")
 

@@ -1,3 +1,5 @@
+from pathlib import Path
+
 import fitbit_data_pipeline.Utility as util
 import os
 import sys
@@ -7,8 +9,8 @@ from flask import Flask, request
 app = Flask(__name__)
 
 # Flask route to handle the redirect URI after OAuth authorization
-project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
-auth_path = os.path.join(project_root, 'auth_code.txt')
+
+auth_path = Path.cwd() / 'auth_code.txt'
 log = util.get_logger()
 
 @app.route('/hello/', methods=['GET'])

@@ -88,7 +88,7 @@ class ParticipantManager:
     #     token_json[participant.participant_id] = token_data
     #
     #     updated_tokens = json.dumps(token_json)
-    #     set_key('.env',"participants_tokens",updated_tokens)
+    #     set_key('.env_',"participants_tokens",updated_tokens)
     #     print(f"Token for participant {participant.participant_id} saved.")
     #
     # @staticmethod

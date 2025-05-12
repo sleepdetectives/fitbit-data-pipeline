@@ -8,7 +8,7 @@ from pathlib import Path
 import pandas as pd
 from datetime import datetime, timedelta
 
-#root_folder = os.path.abspath(os.path.join(os.path.dirname(__file__), '../'))
+
 root_folder = os.getcwd()
 print("The current working directory:",root_folder)
 def get_time(date_time_str):
